@@ -355,10 +355,14 @@ enum Suit {
     }
     func color() -> String {
         switch self {
-        case .Spades .Clubs;:
+        case .Spades:
             return "black"
-        case .Hearts .Diamonds;:
-            return "red"
+        case .Clubs:
+            return "black"      // I don't like repeating, but
+        case .Hearts:
+            return "red"        // can't have differing cases on
+        case .Diamonds:
+            return "red"        // the same line.
         }
     }
 }
@@ -393,4 +397,85 @@ case let .Error(error):
 }
 
 // experiment pg 37
+// don't forget to do
+
+protocol ExampleProtocol {
+    var simpleDescription: String {get}
+    mutating func adjust()
+}
+
+class SimpleClass: ExampleProtocol {
+    var simpleDescription: String = "A very simple class."
+    var anotherProperty: Int = 69105
+    func adjust() {
+        simpleDescription += "Now 100% adjusted"
+    }
+}
+
+var a = SimpleClass()
+a.adjust()
+let aDescription = a.simpleDescription
+
+struct SimpleStructure: ExampleProtocol {
+    var simpleDescription: String = "A simple structure"
+    mutating func adjust() {
+        simpleDescription += " (adjusted) "
+    }
+}
+
+var b = SimpleStructure()
+b.adjust()
+let bDescription = b.simpleDescription
+
+// experiment pg 41
+// don't forget to do
+
+extension Int: ExampleProtocol {
+    var simpleDescription: String {
+        return "The number \(self)"
+    }
+    mutating func adjust() {
+        self += 42
+    }
+}
+
+7.simpleDescription
+
+// experiment pg 42
+// don't forget to do
+
+let protocolValue: ExampleProtocol = a
+protocolValue.simpleDescription
+// protocolValue.anotherProperty // Uncomment to see the error
+
+func repeat<Item>(item: Item, times: Int) -> [Item] {
+    var result = [Item]()
+    for i in 0..<times {
+        result.append(item)
+    }
+    return result
+}
+
+repeat("knock", 4)
+
+enum OptionalValue<T> {
+    case None
+    case Some(T)
+}
+var possibleInteger: OptionalValue<Int> = .None
+possibleInteger = .Some(100)
+
+func anyCommonElements <T, U where T: SequenceType, U: SequenceType, T.Generator.Element: Equatable, T.Generator.Element == U.Generator.Element > (lhs:T, rhs: U) -> Bool {
+    for lhsItem in lhs {
+        for rhsItem in rhs {
+            if lhsItem == rhsItem {
+                return true
+            }
+        }
+    }
+    return false
+}
+anyCommonElements([1,2,3], [3])
+
+// experiment pg 45
 // don't forget to do
